@@ -1,46 +1,51 @@
 import './App.css';
+import {ShowOption, TodoList} from "./Types.ts";
+import RowList from "./components/RowList.tsx";
+import {useState} from "react";
 
 export default function App() {
 
+    const todoData: TodoList = {
+        title: 'jn... ',
+        list: [{job: "job 1", done: false} , {job: "job 2", done: false} ,{job: "job 4", done: true} ],
+        showOption: ShowOption.ALL
+    }
+
+    const [todos, setTodos] = useState<TodoList>(todoData);
+
+    const addTodoRow = (job: string):void => {
+        setTodos({
+           ...todos , list: [...todos.list , {job: job , done: false}]
+        });
+    }
+
+    const makeDoneTodoRow = (job: string) => {
+        setTodos({
+           ...todos , list: todos.list.map( row => {return (job === row.job) ? {job: row.job , done: !row.done} : row})
+        });
+    }
+
+    const deleteTodoRow = (job: string) => {
+        if (job === 'deleteAll'){
+            setTodos({
+                ...todos , list: []
+            });
+        }else{
+            setTodos({
+               ...todos , list: todos.list.filter( row => job !== row.job)
+            });
+        }
+    }
+
+    const updateShowOption = (v:ShowOption) => {
+        setTodos({
+            ...todos, showOption: v
+        });
+    }
+
     return (
         <>
-            <div className="todo-wrapper">
-                <div className="todo-title"></div>
-                <div className="todo-box">
-
-                    <div className="todo-input-box">
-                        <button className="complete-all-btn">✔</button>
-                        <input type="text" className="todo-input" placeholder="input to do .."/>
-                    </div>
-                    <ul className="todo-list">
-                        <li className="todo-item checked">
-                            <div className="checkbox">✔</div>
-                            <div className="todo">첫번째 할 일</div>
-                            <button className="delBtn">x</button>
-                        </li>
-                        <li className="todo-item">
-                            <div className="checkbox"></div>
-                            <div className="todo">두번째 할 일</div>
-                            <button className="delBtn">x</button>
-                        </li>
-                        <li className="todo-item">
-                            <div className="checkbox"></div>
-                            <div className="todo">세번째 할 일</div>
-                            <button className="delBtn">x</button>
-                        </li>
-                    </ul>
-                    <div className="todo-bottom">
-                        <div className="left-items">3 items left</div>
-                        <div className="button-group">
-                            <button className="show-all-btn selected" data-type="all">All</button>
-                            <button className="show-active-btn" data-type="active">Active</button>
-                            <button className="show-completed-btn" data-type="completed">Completed</button>
-                        </div>
-                        <button className="clear-completed-btn">Clear Completed</button>
-                    </div>
-                </div>
-                <p className='info'></p>
-            </div>
+            <RowList todos={todos} addCallBack={addTodoRow} makeDoneTodoRow={makeDoneTodoRow} updateShowOption={updateShowOption} deleteTodoRow={deleteTodoRow}/>
         </>
     );
 }
