@@ -1,9 +1,17 @@
 import './App.css';
-import {ShowOption, TodoList} from "./Types.ts";
+import {ExtToto, ShowOption, TodoList, TodoRow} from "./Types.ts";
 import RowList from "./components/RowList.tsx";
 import {useState} from "react";
 
 export default function App() {
+    async function getDataFromServer():Promise<Array<TodoRow>> {
+        const list: Response = await fetch('https://jsonplaceholder.typicode.com/todos');
+        const list2 = await list.json();
+        return list2.map((obj:ExtToto) => {
+            return {job: obj.title, done: obj.completed};
+        });
+        //console.log(list2);
+    }
 
     const todoData: TodoList = {
         title: 'jn... ',
@@ -43,9 +51,18 @@ export default function App() {
         });
     }
 
+    const extDataAdd = () => {
+        (async () => {
+            const data = await getDataFromServer();
+            setTodos({
+                ...todos, list: [...todos.list, ...data]
+            });
+        })();
+    }
+
     return (
         <>
-            <RowList todos={todos} addCallBack={addTodoRow} makeDoneTodoRow={makeDoneTodoRow} updateShowOption={updateShowOption} deleteTodoRow={deleteTodoRow}/>
+            <RowList todos={todos} addCallBack={addTodoRow} makeDoneTodoRow={makeDoneTodoRow} updateShowOption={updateShowOption} deleteTodoRow={deleteTodoRow} extDataAdd={extDataAdd}/>
         </>
     );
 }

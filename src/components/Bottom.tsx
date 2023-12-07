@@ -6,8 +6,9 @@ type OwnProps = {
     updateShowOption: (v: ShowOption) => void;
     jobCount: number;
     deleteTodoRow: (job: string) => void;
+    extDataAdd: () => void;
 }
-function Bottom({showOption, updateShowOption, jobCount, deleteTodoRow}):React.FC<OwnProps> {
+function Bottom({showOption, updateShowOption, jobCount, deleteTodoRow,extDataAdd}):React.FC<OwnProps> {
 
     const selectShowOption = (v:ShowOption, clzName:string):string => {
         return (showOption === v) ? clzName+" selected" : clzName;
@@ -22,6 +23,7 @@ function Bottom({showOption, updateShowOption, jobCount, deleteTodoRow}):React.F
                 <button className={selectShowOption(ShowOption.COMPLETED, 'show-completed-btn')} onClick={()=>{updateShowOption(ShowOption.COMPLETED)}}>Completed</button>
             </div>
             <button className="clear-completed-btn" onClick={() => deleteTodoRow('deleteAll')}>Clear Completed</button>
+            <button className="clear-completed-btn" onClick={() => extDataAdd()}>extDataAdd</button>
         </div>
     );
 }

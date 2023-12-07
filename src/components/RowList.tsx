@@ -10,8 +10,9 @@ type OwnProps = {
     makeDoneTodoRow: (job: string) => void;
     updateShowOption: (v: ShowOption) => void;
     deleteTodoRow: (job: string) => void;
+    extDataAdd: () => void;
 }
-function RowList({todos, addCallBack, makeDoneTodoRow, updateShowOption, deleteTodoRow}):React.FC<OwnProps>{
+function RowList({todos, addCallBack, makeDoneTodoRow, updateShowOption, deleteTodoRow, extDataAdd}):React.FC<OwnProps>{
 
     const indexx = useRef(0);
     let jobCount = 0;
@@ -59,7 +60,7 @@ function RowList({todos, addCallBack, makeDoneTodoRow, updateShowOption, deleteT
                 <ul className="todo-list">
                     {makeTodoRows()}
                 </ul>
-                <Bottom showOption={todos.showOption} updateShowOption={updateShowOption} jobCount={jobCount} deleteTodoRow={deleteTodoRow}/>
+                <Bottom showOption={todos.showOption} updateShowOption={updateShowOption} jobCount={jobCount} deleteTodoRow={deleteTodoRow} extDataAdd={extDataAdd}/>
             </div>
             <p className='info'></p>
         </div>

@@ -15,3 +15,9 @@ export type TodoList = {
     list: TodoRow[];
     showOption: ShowOption;
 }
+export type ExtToto = {
+    userId: number;
+    id: number;
+    title: string;
+    completed: boolean;
+}
